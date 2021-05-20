@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pinpoint-hbase
+  name: pinpoint-hbase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: pinpoint-hbase
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/pinpoint: "true"
+        io.kompose.service: pinpoint-hbase
+    spec:
+      containers:
+        - image: pinpointdocker/pinpoint-hbase:2.2.2
+          name: pinpoint-hbase
+          ports:
+            - containerPort: 60000
+            - containerPort: 16010
+            - containerPort: 60020
+            - containerPort: 16030
+          resources: {}
+          volumeMounts:
+            - mountPath: /home/pinpoint/hbase
+              name: pinpoint-hbase-claim0
+            - mountPath: /home/pinpoint/zookeeper
+              name: pinpoint-hbase-claim1
+      restartPolicy: Always
+      volumes:
+        - name: pinpoint-hbase-claim0
+          persistentVolumeClaim:
+            claimName: pinpoint-hbase-claim0
+        - name: pinpoint-hbase-claim1
+          persistentVolumeClaim:
+            claimName: pinpoint-hbase-claim1
+status: {}

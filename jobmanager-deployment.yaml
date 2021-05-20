@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: jobmanager
+  name: jobmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: jobmanager
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/pinpoint: "true"
+        io.kompose.service: jobmanager
+    spec:
+      containers:
+        - args:
+            - standalone-job
+            - -p
+            - "1"
+            - pinpoint-flink-job.jar
+            - -spring.profiles.active
+            - release
+          env:
+            - name: JOB_MANAGER_RPC_ADDRESS
+              value: jobmanager
+            - name: PINPOINT_ZOOKEEPER_ADDRESS
+              value: zoo1
+          image: pinpointdocker/pinpoint-flink:2.2.2
+          name: pinpoint-flink-jobmanager
+          ports:
+            - containerPort: 8081
+            - containerPort: 6123
+          resources: {}
+      restartPolicy: Always
+status: {}

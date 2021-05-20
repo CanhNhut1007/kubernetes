@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: taskmanager
+  name: taskmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: taskmanager
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/pinpoint: "true"
+        io.kompose.service: taskmanager
+    spec:
+      containers:
+        - args:
+            - taskmanager
+          env:
+            - name: JOB_MANAGER_RPC_ADDRESS
+              value: jobmanager
+          image: pinpointdocker/pinpoint-flink:2.2.2
+          name: pinpoint-flink-taskmanager
+          ports:
+            - containerPort: 6121
+            - containerPort: 6122
+            - containerPort: 19994
+          resources: {}
+      restartPolicy: Always
+status: {}

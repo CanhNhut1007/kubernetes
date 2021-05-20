@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pinpoint-agent
+  name: pinpoint-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: pinpoint-agent
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/pinpoint: "true"
+        io.kompose.service: pinpoint-agent
+    spec:
+      containers:
+        - env:
+            - name: COLLECTOR_IP
+              value: pinpoint-collector
+            - name: DEBUG_LEVEL
+              value: INFO
+            - name: PROFILER_SAMPLING_RATE
+              value: "1"
+            - name: PROFILER_TRANSPORT_AGENT_COLLECTOR_PORT
+              value: "9991"
+            - name: PROFILER_TRANSPORT_METADATA_COLLECTOR_PORT
+              value: "9991"
+            - name: PROFILER_TRANSPORT_MODULE
+              value: GRPC
+            - name: PROFILER_TRANSPORT_SPAN_COLLECTOR_PORT
+              value: "9993"
+            - name: PROFILER_TRANSPORT_STAT_COLLECTOR_PORT
+              value: "9992"
+            - name: SPRING_PROFILES
+              value: release
+          image: pinpointdocker/pinpoint-agent:2.2.2
+          name: pinpoint-agent
+          resources: {}
+          volumeMounts:
+            - mountPath: /pinpoint-agent
+              name: data-volume
+      restartPolicy: Always
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: data-volume
+status: {}

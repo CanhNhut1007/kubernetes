@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pinpoint-collector
+  name: pinpoint-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: pinpoint-collector
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/pinpoint: "true"
+        io.kompose.service: pinpoint-collector
+    spec:
+      containers:
+        - env:
+            - name: CLUSTER_ENABLE
+              value: "true"
+            - name: FLINK_CLUSTER_ENABLE
+              value: "true"
+            - name: FLINK_CLUSTER_ZOOKEEPER_ADDRESS
+              value: zoo1
+            - name: LOGGING_LEVEL_ROOT
+              value: INFO
+            - name: PINPOINT_ZOOKEEPER_ADDRESS
+              value: zoo1
+            - name: SPRING_PROFILES_ACTIVE
+              value: release
+          image: pinpointdocker/pinpoint-collector:2.2.2
+          name: pinpoint-collector
+          ports:
+            - containerPort: 9991
+            - containerPort: 9992
+            - containerPort: 9993
+            - containerPort: 9994
+            - containerPort: 9995
+            - containerPort: 9996
+            - containerPort: 9995
+              protocol: UDP
+            - containerPort: 9996
+              protocol: UDP
+          resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pinpoint-mysql
+  name: pinpoint-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: pinpoint-mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/pinpoint: "true"
+        io.kompose.service: pinpoint-mysql
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: pinpoint
+            - name: MYSQL_PASSWORD
+              value: admin
+            - name: MYSQL_ROOT_PASSWORD
+              value: root123
+            - name: MYSQL_USER
+              value: admin
+          image: pinpointdocker/pinpoint-mysql:2.2.2
+          name: pinpoint-mysql
+          ports:
+            - containerPort: 3306
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-data
+      hostname: pinpoint-mysql
+      restartPolicy: Always
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-data
+status: {}

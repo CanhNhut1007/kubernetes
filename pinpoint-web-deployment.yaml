@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pinpoint-web
+  name: pinpoint-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: pinpoint-web
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/pinpoint: "true"
+        io.kompose.service: pinpoint-web
+    spec:
+      containers:
+        - env:
+            - name: ADMIN_PASSWORD
+              value: admin
+            - name: ALARM_MAIL_DEBUG
+              value: "false"
+            - name: ALARM_MAIL_SENDER_ADDRESS
+              value: pinpoint_operator@pinpoint.com
+            - name: ALARM_MAIL_SERVER_PASSWORD
+              value: password
+            - name: ALARM_MAIL_SERVER_PORT
+              value: "587"
+            - name: ALARM_MAIL_SERVER_URL
+              value: smtp.gmail.com
+            - name: ALARM_MAIL_SERVER_USERNAME
+              value: username
+            - name: ALARM_MAIL_SMTP_AUTH
+              value: "false"
+            - name: ALARM_MAIL_SMTP_PORT
+              value: "25"
+            - name: ALARM_MAIL_SMTP_STARTTLS_ENABLE
+              value: "false"
+            - name: ALARM_MAIL_SMTP_STARTTLS_REQUIRED
+              value: "false"
+            - name: ALARM_MAIL_TRANSPORT_PROTOCOL
+              value: smtp
+            - name: BATCH_ENABLE
+              value: "false"
+            - name: BATCH_FLINK_SERVER
+              value: pinpoint-flink-jobmanager
+            - name: BATCH_SERVER_IP
+              value: 127.0.0.1
+            - name: CLUSTER_ENABLE
+              value: "true"
+            - name: CONFIG_SENDUSAGE
+              value: "true"
+            - name: CONFIG_SHOW_APPLICATIONSTAT
+              value: "true"
+            - name: JDBC_DRIVERCLASSNAME
+              value: com.mysql.jdbc.Driver
+            - name: JDBC_PASSWORD
+              value: admin
+            - name: JDBC_URL
+              value: jdbc:mysql://pinpoint-mysql:3306/pinpoint?characterEncoding=UTF-8
+            - name: JDBC_USERNAME
+              value: admin
+            - name: LOGGING_LEVEL_ROOT
+              value: INFO
+            - name: PINPOINT_ZOOKEEPER_ADDRESS
+              value: zoo1
+            - name: SERVER_PORT
+              value: "8079"
+            - name: SPRING_PROFILES_ACTIVE
+              value: release,batch
+          image: pinpointdocker/pinpoint-web:2.2.2
+          name: pinpoint-web
+          ports:
+            - containerPort: 9997
+            - containerPort: 8080
+          resources: {}
+      restartPolicy: Always
+status: {}
