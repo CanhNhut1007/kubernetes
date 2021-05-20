@@ -1,29 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.22.0 (955b78124)
-  creationTimestamp: null
   labels:
-    io.kompose.service: pinpoint-hbase
+    app: pinpoint-hbase
   name: pinpoint-hbase
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: pinpoint-hbase
+      app: pinpoint-hbase
   strategy:
     type: Recreate
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert
-        kompose.version: 1.22.0 (955b78124)
-      creationTimestamp: null
       labels:
-        io.kompose.network/pinpoint: "true"
-        io.kompose.service: pinpoint-hbase
+        app: pinpoint-hbase
     spec:
       containers:
         - image: pinpointdocker/pinpoint-hbase:2.2.2

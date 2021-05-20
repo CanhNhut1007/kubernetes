@@ -1,28 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.22.0 (955b78124)
-  creationTimestamp: null
   labels:
-    io.kompose.service: zoo2
+    app: zoo2
   name: zoo2
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: zoo2
+      app: zoo2
   strategy: {}
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert
-        kompose.version: 1.22.0 (955b78124)
-      creationTimestamp: null
       labels:
-        io.kompose.network/pinpoint: "true"
-        io.kompose.service: zoo2
+        app: zoo2
     spec:
       containers:
         - env:

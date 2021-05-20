@@ -1,28 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.22.0 (955b78124)
-  creationTimestamp: null
   labels:
-    io.kompose.service: pinpoint-web
+    app: pinpoint-web
   name: pinpoint-web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: pinpoint-web
+      app: pinpoint-web
   strategy: {}
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert
-        kompose.version: 1.22.0 (955b78124)
-      creationTimestamp: null
       labels:
-        io.kompose.network/pinpoint: "true"
-        io.kompose.service: pinpoint-web
+        app: pinpoint-web
     spec:
       containers:
         - env:
@@ -55,7 +46,7 @@ spec:
             - name: BATCH_FLINK_SERVER
               value: pinpoint-flink-jobmanager
             - name: BATCH_SERVER_IP
-              value: 127.0.0.1
+              value: 0.0.0.0
             - name: CLUSTER_ENABLE
               value: "true"
             - name: CONFIG_SENDUSAGE

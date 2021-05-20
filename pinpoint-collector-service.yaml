@@ -1,12 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.22.0 (955b78124)
-  creationTimestamp: null
   labels:
-    io.kompose.service: pinpoint-collector
+    app: pinpoint-collector
   name: pinpoint-collector
 spec:
   ports:
@@ -37,6 +33,6 @@ spec:
       protocol: UDP
       targetPort: 9996
   selector:
-    io.kompose.service: pinpoint-collector
+    app: pinpoint-collector
 status:
   loadBalancer: {}

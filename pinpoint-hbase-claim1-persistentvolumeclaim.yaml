@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: pinpoint-hbase-claim1
+    app: pinpoint-hbase-claim1
   name: pinpoint-hbase-claim1
 spec:
   accessModes:

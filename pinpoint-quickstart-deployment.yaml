@@ -1,29 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.22.0 (955b78124)
-  creationTimestamp: null
   labels:
-    io.kompose.service: pinpoint-quickstart
+    app: pinpoint-quickstart
   name: pinpoint-quickstart
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: pinpoint-quickstart
+      app: pinpoint-quickstart
   strategy:
     type: Recreate
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert
-        kompose.version: 1.22.0 (955b78124)
-      creationTimestamp: null
       labels:
-        io.kompose.network/pinpoint: "true"
-        io.kompose.service: pinpoint-quickstart
+        app: pinpoint-quickstart
     spec:
       containers:
         - env:
